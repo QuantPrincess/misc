@@ -1,0 +1,80 @@
+param de_rate;
+param dp_rate;
+param dy_rate;
+param dc_rate;
+
+param ed_rate;
+param ep_rate;
+param ey_rate;
+param ec_rate;
+
+param pd_rate;
+param pe_rate;
+param py_rate;
+param pc_rate;
+
+param yd_rate;
+param ye_rate;
+param yp_rate;
+param yc_rate;
+
+param cd_rate;
+param ce_rate;
+param cp_rate;
+param cy_rate;
+
+param vmax;
+param fee;
+
+
+var de>=0; var dp >=0; var dy >=0; var dc>=0;
+var ed>=0; var ep >=0; var ey >=0; var ec>=0;
+var pd>=0; var pe >=0; var py >=0; var pc>=0;
+var yd>=0; var ye >=0; var yp >=0; var yc>=0;
+var cd>=0; var ce >=0; var cp >=0; var cy>=0;
+
+var d_arb >=0;
+var vol <= vmax;
+
+maximize arb: d_arb - fee*vol;
+
+subject to dollars:-de-dp-dy-dc +de_rate*ed+dp_rate*pd+dy_rate*yd+dc_rate*cd = d_arb;
+subject to euros: -ed-ep-ey-ec+ed_rate*de+ep_rate*pe+ey_rate*ye+ec_rate*ce = 0;
+subject to pounds:-pd-pe-py-pc+pd_rate*dp+pe_rate*ep+py_rate*yp+pc_rate*cp = 0;
+subject to yen: -yd-ye-yp-yc+yd_rate*dy+ye_rate*ey+yp_rate*py+yc_rate*cy = 0;
+subject to chf: -cd-ce-cp-cy+cd_rate*dc+ce_rate*ec+cp_rate*pc+cy_rate*yc = 0;
+
+subject to volume: de+dp+dy+dc+(ed+ep+ey+ec)/ed_rate + (pd+pe+py+pc)/pd_rate + (yd+ye+yp+yc)/yd_rate + (cd+ce+cp+cy)/cd_rate = vol;
+
+data;
+param de_rate:= 1.0142;
+param dp_rate:= 0.8885;
+param dy_rate:= 146.147;
+param dc_rate:= 0.9847;
+
+param ed_rate:= 0.9879;
+param ep_rate:= 0.8762;
+param ey_rate:= 142.71;
+param ec_rate:= 0.9710;
+
+param pd_rate:= 1.1259;
+param pe_rate:= 1.1413;
+param py_rate:= 162.94;
+param pc_rate:= 1.1088;
+
+param yd_rate:= 0.006831;
+param ye_rate:= 0.0070;
+param yp_rate:= 0.0061;
+param yc_rate:= 0.0068;
+
+param cd_rate:= 1.0159;
+param ce_rate:= 1.0293;
+param cp_rate:= 0.9013;
+param cy_rate:= 146.97;
+
+param vmax:= 1000000000;
+param fee:=  0.001;
+
+
+end;
+
